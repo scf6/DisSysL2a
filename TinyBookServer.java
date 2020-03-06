@@ -1,27 +1,16 @@
 import java.sql.*;
+import java.util.Vector;
+import org.apache.xmlrpc.webserver.WebServer;
+import org.apache.xmlrpc.server.XmlRpcServer;
+import org.apache.xmlrpc.server.PropertyHandlerMapping;
+import org.apache.xmlrpc.XmlRpcException;
 
 public class TinyBookServer {
    private static Connection c;
 
-   public static void insert_row(Connection c, String args){
+   public static Object[] search(String topic){
       Statement stmt = null;
-
-      try{
-         stmt = c.createStatement();
-         String sql = "INSERT INTO BOOKS (ID,TITLE,TOPIC,STOCK,PRICE) " +
-                  "VALUES" + args + " ;"; 
-
-         stmt.executeUpdate(sql);
-         stmt.close();
-      } catch (Exception e ){
-         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-         System.exit(0);
-      }
-      System.out.println("Row created successfully");
-   }
-
-   public static String search(String topic){
-      Statement stmt = null;
+      Vector<String> return_value = new Vector<String>();
 
       try{
          stmt = c.createStatement();
@@ -36,15 +25,15 @@ public class TinyBookServer {
             int stock = results.getInt("stock");
             float price = results.getFloat("price");
 
-            System.out.println(title);
+            return_value.add("TITLE=" + title + ",ID=" + id);
          }
          stmt.close();
       } catch (Exception e ){
          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
          System.exit(0);
       }
-      System.out.println("Search for " + topic + " successful");
-      return "";
+
+      return return_value.toArray();
    }
 
    public String lookup(String item_number){
@@ -65,7 +54,7 @@ public class TinyBookServer {
          c = DriverManager.getConnection("jdbc:sqlite:test.db");
          System.out.println("Opened database successfully");
 
-         search("College Life");
+         System.out.println(search("College Life"));
 
          c.close();
       } catch ( Exception e ) {
