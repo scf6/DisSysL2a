@@ -53,7 +53,7 @@ public class TinyBookServer {
             int stock = results.getInt("stock");
             float price = results.getFloat("price");
 
-            result = "ID=" + id + ",TITLE=" + title + ",TOPIC=" + returned_topic + ",STOCK=" + stock + "PRICE=" + price;
+            result = "ID=" + id + ",TITLE=" + title + ",TOPIC=" + returned_topic + ",STOCK=" + stock  + "PRICE=" + price;
          }
          stmt.close();
       } catch (Exception e ){
