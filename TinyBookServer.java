@@ -60,7 +60,7 @@ public class TinyBookServer {
             int stock = results.getInt("stock");
             float price = results.getFloat("price");
 
-            result = "ID=" + id + ",TITLE=" + title + ",TOPIC=" + returned_topic + ",STOCK=" + stock  + "PRICE=" + price;
+            result = "ID=" + id + ",TITLE=" + title + ",TOPIC=" + returned_topic + ",STOCK=" + stock  + ",PRICE=" + price;
          }
          stmt.close();
       } catch (Exception e ){
@@ -104,7 +104,10 @@ public class TinyBookServer {
                         "VALUES ('" + java.time.LocalDateTime.now() + "', '" + title + "') ;"; 
                log_update.executeUpdate(sql);
                log_update.close();
-            }
+            }else{
+					stmt.close();
+					return "Failure: There were no books in stock";
+				}
          }
          stmt.close();
       } catch (Exception e ){
