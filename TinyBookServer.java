@@ -83,6 +83,11 @@ public class TinyBookServer {
 
          ResultSet results = stmt.executeQuery(sql);
 
+			if(!results.isBeforeFirst()){
+				stmt.close();
+				return "Failure: Book didn't exist";
+			}			
+
          while (results.next() ){
             int id = results.getInt("id");
             String title = results.getString("title");
